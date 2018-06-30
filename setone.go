@@ -23,3 +23,18 @@ func ChallengeOne(in string) string {
 
 	return out.String()
 }
+
+func ChallengeTwo(in, key string) string {
+	inBytes, _ := hex.DecodeString(in)
+	keyBytes, _ := hex.DecodeString(key)
+
+	n := len(inBytes)
+
+	outBytes := make([]byte, n)
+
+	for i := 0; i < n; i++ {
+		outBytes[i] = inBytes[i] ^ keyBytes[i]
+	}
+
+	return hex.EncodeToString(outBytes)
+}
