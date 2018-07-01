@@ -15,6 +15,5 @@ func ChallengeFive(in string) string {
 }
 
 func main() {
-	fmt.Println(ChallengeFive("Burning 'em, if you ain't quick and nimble"))
-	fmt.Println(ChallengeFive("I go crazy when I hear a cymbal"))
+	fmt.Println(ChallengeFive("Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"))
 }
