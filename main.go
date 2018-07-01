@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
@@ -48,7 +49,7 @@ func main() {
 		},
 		{
 			Name:  "three",
-			Usage: "Hex to Base64",
+			Usage: "Single char XOR",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input",
@@ -56,8 +57,32 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				out := ChallengeThree(c.String("input"))
+				out, _ := ChallengeThree(c.String("input"))
 				fmt.Println(out)
+				return nil
+			},
+		},
+		{
+			Name:  "four",
+			Usage: "Single char XOR search",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "file",
+					Value: "challenge4.txt",
+				},
+			},
+			Action: func(c *cli.Context) error {
+				f, err := os.Open(c.String("file"))
+				if err != nil {
+					return err
+				}
+
+				defer f.Close()
+				scanner := bufio.NewScanner(f)
+				ciphertext, plaintext, _ := ChallengeFour(scanner)
+
+				fmt.Println("Ciphertext:", ciphertext)
+				fmt.Println("Plaintext:", plaintext)
 				return nil
 			},
 		},

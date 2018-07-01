@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/base64"
 	"encoding/hex"
@@ -81,11 +82,13 @@ func scoreString(in []byte) float64 {
 		if 'a' <= c && c <= 'z' {
 			charCounts[int(c)-'a']++
 			totalCount++
-		}
-
-		if c == ' ' {
+		} else if c == ' ' {
 			charCounts[26]++
 			totalCount++
+		} else if 10 <= c && c <= 126 {
+
+		} else {
+			return 666 // we got some garbage
 		}
 	}
 
@@ -102,7 +105,7 @@ func scoreString(in []byte) float64 {
 	return chi2
 }
 
-func ChallengeThree(in string) string {
+func ChallengeThree(in string) (string, float64) {
 	inBytes, _ := hex.DecodeString(in)
 
 	minScore := 100000.00
@@ -119,5 +122,23 @@ func ChallengeThree(in string) string {
 		}
 	}
 
-	return answer
+	return answer, minScore
+}
+
+func ChallengeFour(scanner *bufio.Scanner) (string, string, float64) {
+	minScore := 10000.0
+	var ciphertext, plaintext string
+
+	for scanner.Scan() {
+		inStr := scanner.Text()
+		guess, score := ChallengeThree(inStr)
+
+		if score > 1 && score < minScore {
+			minScore = score
+			plaintext = guess
+			ciphertext = inStr
+		}
+	}
+
+	return ciphertext, plaintext, minScore
 }
