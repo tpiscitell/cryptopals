@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/hex"
-	"errors"
 )
 
 func CrackXOR(in string) (string, float64) {
@@ -13,7 +12,7 @@ func CrackXOR(in string) (string, float64) {
 
 	for i := 0; i < 256; i++ {
 		k := byte(i)
-		outBytes, _ := XOR(inBytes, k)
+		outBytes := singleXOR(inBytes, k)
 		score := ScoreString(outBytes)
 
 		if score > 1 && score < minScore {
@@ -25,19 +24,27 @@ func CrackXOR(in string) (string, float64) {
 	return answer, minScore
 }
 
-func XOR(in []byte, key byte) ([]byte, error) {
+func XOR(in, key []byte) []byte {
 	n := len(in)
+	kn := len(key)
 	out := make([]byte, n)
 
-	if n != len(out) {
-		return nil, errors.New("out and in must be the same length")
+	for i := 0; i < n; i++ {
+		out[i] = in[i] ^ key[i%kn]
 	}
+
+	return out
+}
+
+func singleXOR(in []byte, key byte) []byte {
+	n := len(in)
+	out := make([]byte, n)
 
 	for i := 0; i < n; i++ {
 		out[i] = in[i] ^ key
 	}
 
-	return out, nil
+	return out
 }
 
 func ScoreString(in []byte) float64 {
