@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/hex"
 	"fmt"
 	"os"
 
@@ -9,21 +10,22 @@ import (
 )
 
 func ChallengeFour(scanner *bufio.Scanner) (string, string, float64) {
-	minScore := 10000.0
+	var maxScore float64
 	var ciphertext, plaintext string
 
 	for scanner.Scan() {
 		inStr := scanner.Text()
-		guess, score := utils.CrackXOR(inStr)
+		in, _ := hex.DecodeString(inStr)
+		guess, _, score := utils.CrackXOR(in)
 
-		if score > 1 && score < minScore {
-			minScore = score
-			plaintext = guess
+		if score > maxScore {
+			maxScore = score
+			plaintext = string(guess)
 			ciphertext = inStr
 		}
 	}
 
-	return ciphertext, plaintext, minScore
+	return ciphertext, plaintext, maxScore
 }
 
 func main() {

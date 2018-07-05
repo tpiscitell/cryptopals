@@ -12,9 +12,9 @@ func TestChallengeFour(t *testing.T) {
 
 	expected := "Now that the party is jumping\n"
 
-	_, out, _ := ChallengeFour(bufio.NewScanner(f))
+	cipher, out, score := ChallengeFour(bufio.NewScanner(f))
 
 	if out != expected {
-		t.Error("Expected: ", expected, "Got:", out)
+		t.Error("Expected: ", expected, "Got:", out, "Cipher:", cipher, "Score:", score)
 	}
 }
