@@ -26,7 +26,7 @@ func TestHammingDist(t *testing.T) {
 	a := "this is a test"
 	b := "wokka wokka!!!"
 
-	diff, _ := HammingDistStr(a, b)
+	diff := HammingDistStr(a, b)
 
 	if diff != 37 {
 		t.Error("Dist should be 37. Got:", diff)
