@@ -37,3 +37,13 @@ func TestRepeats(t *testing.T) {
 		t.Error("Count should be 4. Got:", count)
 	}
 }
+
+func TestNoRepeats(t *testing.T) {
+	in := []byte{0x00, 0x01, 0x00, 0x01, 0x02, 0x33, 0x45, 0x44, 0x45}
+
+	count := CountRepeats(in, 3)
+
+	if count != 0 {
+		t.Error("Count should be 0. Got:", count)
+	}
+}
