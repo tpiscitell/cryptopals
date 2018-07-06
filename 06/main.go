@@ -1,10 +1,7 @@
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
-	"io/ioutil"
-	"os"
 
 	"github.com/tpiscitell/cryptopals/utils"
 )
@@ -95,10 +92,7 @@ func Transpose(in [][]byte) [][]byte {
 }
 
 func main() {
-	f, _ := os.Open("6.txt")
-	defer f.Close()
-	reader := base64.NewDecoder(base64.StdEncoding, f)
-	ciphertext, _ := ioutil.ReadAll(reader)
+	ciphertext := utils.ReadBase64File("6.txt")
 
 	keysize := FindKeySize(ciphertext)
 
