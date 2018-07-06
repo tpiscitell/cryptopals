@@ -1,6 +1,9 @@
 package utils
 
-import "crypto/aes"
+import (
+	"crypto/aes"
+	"encoding/hex"
+)
 
 func AesEcbEncrypt(plaintext, key []byte) []byte {
 	blockSize := len(key)
@@ -85,4 +88,26 @@ func AesCbcDecrypt(ciphertext, key, iv []byte) []byte {
 	}
 
 	return plaintext
+}
+
+func CountRepeats(in []byte, blockSize int) int {
+	counter := make(map[string]int)
+	blockCount := len(in) / blockSize
+
+	for i := 0; i < blockCount; i++ {
+		start := i * blockSize
+		end := start + blockSize
+
+		slice := hex.EncodeToString(in[start:end])
+		counter[slice]++
+	}
+
+	var repeats int
+	for _, v := range counter {
+		if v > 1 {
+			repeats += v
+		}
+	}
+
+	return repeats
 }

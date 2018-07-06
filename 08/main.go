@@ -2,11 +2,14 @@ package main
 
 import (
 	"bufio"
+	"encoding/hex"
 	"fmt"
 	"os"
+
+	"github.com/tpiscitell/cryptopals/utils"
 )
 
-func main() {
+func ChallengeEight() (string, int) {
 	f, _ := os.Open("8.txt")
 	scanner := bufio.NewScanner(f)
 
@@ -14,25 +17,10 @@ func main() {
 	var maxRepeats int
 
 	for scanner.Scan() {
-		counter := make(map[string]int)
 		ciphertext := scanner.Text()
-		blockSize := 16
-		blockCount := len(ciphertext) / blockSize
+		b, _ := hex.DecodeString(ciphertext)
 
-		for i := 0; i < blockCount; i++ {
-			start := i * blockSize
-			end := start + blockSize
-
-			slice := ciphertext[start:end]
-			counter[slice]++
-		}
-
-		var repeats int
-		for _, v := range counter {
-			if v > 1 {
-				repeats += v
-			}
-		}
+		repeats := utils.CountRepeats(b, 16)
 
 		if repeats > maxRepeats {
 			answer = ciphertext
@@ -40,5 +28,8 @@ func main() {
 		}
 	}
 
-	fmt.Println(answer, maxRepeats)
+	return answer, maxRepeats
+}
+func main() {
+	fmt.Println(ChallengeEight())
 }

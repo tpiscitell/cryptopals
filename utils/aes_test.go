@@ -27,3 +27,13 @@ func TestAesCBC(t *testing.T) {
 		t.Error("Encrypted and decrypting with the same key got different results")
 	}
 }
+
+func TestRepeats(t *testing.T) {
+	in := []byte{0x00, 0x01, 0x00, 0x01, 0x02, 0x33, 0x45, 0x44, 0x45, 0x44}
+
+	count := CountRepeats(in, 2)
+
+	if count != 4 {
+		t.Error("Count should be 4. Got:", count)
+	}
+}
