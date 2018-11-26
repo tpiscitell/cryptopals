@@ -1,39 +1,25 @@
 package main
 
 import (
-	"crypto/rand"
 	"fmt"
-	"math/big"
 
 	"github.com/tpiscitell/cryptopals/utils"
 )
 
-func RandBytes(l int64) []byte {
-	b := make([]byte, l)
-	rand.Read(b)
-
-	return b
-}
-
-func RandInt(n int64) int64 {
-	randInt, _ := rand.Int(rand.Reader, big.NewInt(n))
-	return randInt.Int64()
-}
-
 func EncryptionOracle(in []byte) []byte {
-	extraCount := RandInt(5) + 5
+	extraCount := utils.RandInt(5) + 5
 
 	var paddedIn []byte
 
-	paddedIn = append(paddedIn, RandBytes(extraCount)...)
+	paddedIn = append(paddedIn, utils.RandBytes(extraCount)...)
 	paddedIn = append(paddedIn, in...)
-	paddedIn = append(paddedIn, RandBytes(extraCount)...)
+	paddedIn = append(paddedIn, utils.RandBytes(extraCount)...)
 
-	key := RandBytes(16)
+	key := utils.RandBytes(16)
 
-	if RandInt(2)%2 == 0 {
+	if utils.RandInt(2)%2 == 0 {
 		fmt.Println("Using CBC!")
-		iv := RandBytes(16)
+		iv := utils.RandBytes(16)
 
 		return utils.AesCbcEncrypt(in, key, iv)
 	} else {
